@@ -1,0 +1,48 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let demoNode = {
+        tagName: "ul",
+        props: { class: "list" },
+        children: [
+          { tagName: "li", children: ["douyin"] },
+          { tagName: "li", children: ["toutiao"] },
+        ],
+      };
+
+      function gen({ tagName, props, children }) {
+        const ele = document.createElement(tagName);
+        if (props) {
+          Object.keys(props).forEach(key => {
+            ele.setAttribute(key, props[key]);
+          });
+        }
+        if (children) {
+          if (typeof children[0] === "string") {
+            children.forEach(item => {
+              ele.innerText = item;
+            });
+          } else {
+            children.forEach(item => {
+              const { tagName, props, children } = item;
+              const childEle = this.gen({ tagName, props, children });
+              ele.appendChild(childEle);
+            });
+          }
+        }
+        return ele;
+      }
+      const tree = gen(demoNode);
+      console.log(tree);
+      document.body.appendChild(tree);
+    </script>
+  </body>
+</html>

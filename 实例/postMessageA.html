@@ -1,0 +1,25 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>postMessageA</title>
+  </head>
+  <body>
+    <script>
+      const targetWindow = window.open(
+        "http://127.0.0.1:5500/%E9%A2%98%E7%9B%AE/postMessageB.html",
+      );
+      setTimeout(() => {
+        targetWindow.postMessage("open B");
+      }, 1000);
+
+      function receiveMessage(e) {
+        console.log(e.data);
+      }
+      window.addEventListener("message", receiveMessage, false);
+    </script>
+  </body>
+</html>

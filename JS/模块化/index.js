@@ -1,0 +1,3 @@
+/** @format */
+
+require("./foo.js");
