@@ -4,7 +4,7 @@
 
 // p是promise的实例
 
-// 不停地遍历sub的原型链
+// 不停地遍历sub的原型的原型的原型...........
 function instanceof_(sub, sup) {
   let proto = Object.getPrototypeOf(sub);
   let prototype = sup.prototype;
