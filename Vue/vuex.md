@@ -10,7 +10,7 @@
 1. new ModuleCollection -> newModule 递归遍历所有的子模块，建立父子关系
 
 2. installModule，安装模块
-   创建模块内部的上下文 local 对象，主要是为 dispatch/commit/getters 添加命名空间，在模块内部调用的时候用户就不用书写命名空间；构建具有层级关系的 state 对象
+   创建模块的上下文 local 对象，主要是为 dispatch/commit/getters 添加命名空间，在模块内部调用的时候用户就不用书写命名空间；构建具有层级关系的 state 对象
    2.1 local 有 dispatch/commit 属性，这两个函数的第一个参数为 mutation/action 名称，如果有命名空间会自动带上命名空间
    2.2 local 对象有 getters 属性，通过从 store.getters 与 gettersProxy 获取带命名空间的 getters，免去用户在模块内部书写命名空间
    2.3 local 对象有 state 属性，state 是具有层级关系的
@@ -18,7 +18,7 @@
    注：
 
    1. store.getters 含所有模块的 getters(没有父子关系，带有命名空间/不带命名空间的值)
-   2. store.makeLocalGettersCache 是一个缓存对象，其 key 的值为模块的命名空间(没有父子关系)，其值为 getterProxy。getterProxy 的 key 为不带有命名空间的 getters 的 key，值会从 store.getters 内取出。
+   2. store.makeLocalGettersCache 是一个缓存对象，其 key 的值为模块的命名空间(没有父子关系)，其值为 getterProxy。getterProxy 的 key 为各个模块内部不带有命名空间的 getters 的 key，值会从 store.getters 内取出。
       local.getters 就是返回 store.makeLocalGettersCache[key]
 
 3. 注册 action getter mutation
@@ -35,7 +35,7 @@
 问：如何区分是直接修改 state 还是通过 commit 修改 state。
 答：Vuex 内部有一个\_committing 变量，通过 commit 修改前后会修改此值，所有可以通过 watch state 方法，当 state 变化的时候，检测\_committing 值是否变化，变化了就是通过 commit 改变的，否则就是直接改变
 
-问：调试时的”时空穿梭”功能是如何实现的？
+问：调试时的“时空穿梭”功能是如何实现的？
 问：devtoolPlugin 中提供了此功能。因为 dev 模式下所有的 state change 都会被记录下来，’时空穿梭’ 功能其实就是将当前的 state 替换为记录中某个时刻的 state 状态，利用 store.replaceState(targetState) 方法将执行 this.\_vm.state = state 实现。
 
 问：map 函数的作用
