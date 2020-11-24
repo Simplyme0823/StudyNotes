@@ -1,7 +1,7 @@
 /** @format */
 
-var fs = require("fs");
-const { resolve } = require("path");
+const fs = require("fs");
+
 function run(gen) {
   return new Promise((resolve, reject) => {
     const task = gen();
@@ -13,6 +13,7 @@ function run(gen) {
       try {
         result = next();
       } catch (err) {
+        console.log(err, "try catch");
         return reject(err);
       }
 
@@ -30,6 +31,7 @@ function run(gen) {
             step(() => task.next(value));
           })
           .catch(err => {
+            console.log(err, "throw");
             step(() => task.throw(err));
           })
       );
@@ -40,11 +42,12 @@ function run(gen) {
 }
 
 const res = run(function* () {
-  try {
-    yield fs.openSync("fdas");
-  } catch (err) {
-    console.log("同步错误");
-  }
+  // try {
+  yield fs.openSync("fdas");
+  // } catch (err) {
+  //   console.log(err, "run");
+  // }
+
   val = yield Promise.resolve(42);
   console.log(val);
   try {
@@ -55,8 +58,8 @@ const res = run(function* () {
   console.log(val);
 });
 
-res.catch(err => {
-  console.log(err);
+res.catch(() => {
+  console.log();
 });
 
 function run_(gen) {
@@ -84,4 +87,14 @@ function run_(gen) {
 
     step(() => task.next());
   });
+}
+
+try {
+  try {
+    fs.openSync("fdsa");
+  } catch (err) {
+    console.log("openSync error");
+  }
+} catch (err) {
+  console.log(err);
 }
