@@ -14,21 +14,36 @@ if (!Function.prototype.bind)
 
       const fToBind = this;
       const fNOP = function () {};
+      if (this.prototype) {
+        fNOP.prototype = this.prototype;
+      }
       const fBound = function (...args) {
         return fToBind.apply(
-          // 考虑到new fBound的情况
-          fNOP.prototype.isPrototypeOf(this) ? this : otherThis,
+          fNOP.prototype.isPrototypeOf(this) ? fToBind : otherThis,
           baseArgs.concat(args),
         );
       };
-
-      if (this.prototype) {
-        // Function.prototype doesn't have a prototype property
-        fNOP.prototype = this.prototype;
-      }
-
       fBound.prototype = new fNOP();
-
       return fBound;
     };
   })();
+
+Function.prototype.myBind = function (context, ...args1) {
+  const self = this;
+  const fNOP = function () {};
+  if (self.prototype) {
+    fNOP.prototype = self.prototype;
+  }
+
+  function Fn(...args2) {
+    self.apply(this instanceof fNOP ? self : context, args1.concat(args2));
+  }
+  Fn.prototype = new fNOP();
+  return Fn;
+};
+
+function test() {
+  console.log(this);
+}
+
+test.myBind({ name: "test" })();
