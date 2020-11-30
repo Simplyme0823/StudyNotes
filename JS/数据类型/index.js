@@ -21,4 +21,4 @@ console.log(0 - undefined);
 if (a === 3 && a === 6 && a === 9) {
 }
 
-https://segmentfault.com/a/1190000019735321?utm_source=sf-related
+// https://segmentfault.com/a/1190000019735321?utm_source=sf-related
