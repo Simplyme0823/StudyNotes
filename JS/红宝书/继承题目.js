@@ -45,5 +45,10 @@ console.log(subType.prototype.__proto__.__proto__ === Object.prototype);
 console.log(subType.__proto__);
 
 //  TODO Object.create与原型链的关系
-const obj = Object.create({});
+const obj = Object.create({ a: "a" });
+// {a: "a"}
+console.log(obj.__proto__);
+// Object.prototype/{}
+console.log(obj.__proto__.__proto__);
+// null
 console.log(obj.__proto__.__proto__.__proto__);
