@@ -10,35 +10,37 @@ function subType() {
 subType.prototype = Object.create(superType.prototype);
 subType.prototype.constructor = subType;
 
-// 基类原型对象prototype：superType
+// superType {}
 console.log(superType.prototype);
-// 基类原型对象的原型对象： 对象是没有prototype，只有构造函数有
+// undefined
 console.log(superType.prototype.prototype);
-// 基类原型对象的__proto__： Object.prototype/{}
+// Object.prototype
 console.log(superType.prototype.__proto__);
-// 基类函数对象的__proto__： Function
+// Function
 console.log(superType.__proto__);
-// Function的prototype： undefined
+// undefined
 console.log(superType.__proto__.prototype);
-// Function的__proto__: Object.prototype/{}
+// Function
 console.log(superType.__proto__.__proto__);
+// Function
+console.log(Function.prototype);
+// Function
+console.log(Function.__proto__);
+// Function
+console.log(Function.prototype.prototype);
+// Function
+console.log(Function.__proto__.__proto__);
 
-console.log(Function.prototype); // Funciton
-console.log(Function.__proto__); // Funciton
-console.log(Function.prototype.prototype); // undefined
-console.log(Function.__proto__.__proto__); // Object.prototype/{}
-
-// 对象 subType { constructor: [Function: subType] }
+// subType { constructor: [Function: subType] }
 console.log(subType.prototype);
-
-// undefined,原型对象是对象，对象是没有prototype属性的
-// prototype.prototype都是undefined
+// undefined
 console.log(subType.prototype.prototype);
 
+// 这里是由于Object.create的原因
 // superType {}
 console.log(subType.prototype.__proto__);
 
-// Object.prototype/{}
+// true
 console.log(subType.prototype.__proto__.__proto__ === Object.prototype);
 
 // Function

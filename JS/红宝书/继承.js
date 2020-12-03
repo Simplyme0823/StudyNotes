@@ -48,6 +48,7 @@ function createAnother(orign) {
   clone.sayHi = function () {
     console.log("Hi");
   };
+  return clone;
 }
 
 // 组合继承
