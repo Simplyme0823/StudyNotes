@@ -7,6 +7,7 @@
 function objectAssign() {
   const target = arguments[0];
   const orgins = Array.prototype.slice.call(arguments, 1);
+  // for of避免原型链上的对象
   for (const orgin of orgins) {
     // 注意undefined与null
     if (orgin !== undefined && orgin !== null) {

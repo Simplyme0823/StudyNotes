@@ -9,8 +9,10 @@ Array.prototype.myReduce = function (fn) {
   const len = arr.length;
 
   let k = 0;
+  // 将数组变成对象
   let o = Object(this);
   let value; // 累积变化的值
+  // 设定初始值，如果初始值没有就为第一个元素，但是这里考虑到了稀数组的情况
   if (arguments.length >= 2) {
     value = arguments[1];
   } else {

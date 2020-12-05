@@ -2,6 +2,7 @@
 
 var x = 1;
 
+// 相当于 在func函数外部声明了一个变量对象
 function func(
   x,
   y = function () {
