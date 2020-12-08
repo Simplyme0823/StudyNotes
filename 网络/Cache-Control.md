@@ -26,3 +26,8 @@ no-transform：告诉代理服务器不能修改响应包体内
 
 1. 强缓存：expire 过去的时间
 2. 协商缓存：no-store max-age=0
+
+### Pragama
+
+用于 HTTP1.0
+https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Pragma

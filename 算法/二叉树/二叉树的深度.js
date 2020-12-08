@@ -10,6 +10,7 @@ function deep_(head) {
   let deep = 0;
   let queue = [head];
   while (queue.length) {
+    // 多套一层循环，每次加入队列的数目都是下一层节点的总数
     let levelNumber = queue.length;
     deep++;
     while (levelNumber--) {
