@@ -1,8 +1,8 @@
 <!-- @format -->
 
 标志位，本质上就是数据表
-SYN：Synchronize Sequence Numbers 同步序列号
-ACK：Acknowledgement number 确认号
+SYN：Synchronize Sequence Numbers 同步序列号,解决网络包乱序的问题
+ACK：Acknowledgement number 确认号,下一次期望收到的数据的序列号，解决不丢包的问题
 
 seq 就是初始化序列号 isn
 状态
@@ -40,14 +40,28 @@ ESTABLISHED：代表一个打开的连接，数据可以传送给用户
 
    https://www.jianshu.com/p/4ba0d706ee7c
    https://blog.csdn.net/gx17864373822/article/details/105531244
-   为什么需要 LAST-ACK 状态：https://www.zhihu.com/question/27564314
 
-为什么 TIME_WAIT 等待的时间是 2MSL？
+## 为什么需要 LAST-ACK 状态
+
+根据 B 是否收到最后的 ACK 包分为两种情况：
+
+1.  B 发送 FIN，进入 LAST_ACK 状态，A 收到这个 FIN 包后发送 ACK 包，B 收到这个 ACK 包，然后进入 CLOSED 状态
+2.  B 发送 FIN，进入 LAST_ACK 状态，A 收到这个 FIN 包后发送 ACK 包，由于某种原因，这个 ACK 包丢失了，B 没有收到 ACK 包，然后 B 等待 ACK 包超时，又向 A 发送了一个 FIN 包
+    2.1 假如这个时候，A 还是处于 TIME_WAIT 状态(也就是 TIME_WAIT 持续的时间在 2MSL 内)A 收到这个 FIN 包后向 B 发送了一个 ACK 包，B 收到这个 ACK 包进入 CLOSED 状态
+    2.2 假如这个时候，A 已经从 TIME_WAIT 状态变成了 CLOSED 状态 A 收到这个 FIN 包后，认为这是一个错误的连接，向 B 发送一个 RST 包，当 B 收到这个 RST 包，进入 CLOSED 状态
+
+https://www.zhihu.com/question/27564314
+
+## 为什么 TIME_WAIT 等待的时间是 2MSL？
+
 MSL 是 Maximum Segment Lifetime，报文最大生存时间。网络中可能存在来自发送方的数据包，当这些发送方的数据包被接收方处理后又会向对方发送响应，所以一来一回需要等待 2 倍的时间。
 
-为什么需要 TIME_WATI
+## 为什么需要 TIME_WATI
 
 1. TCP 连接被复用，上一次连接传输的 ACK 包延迟到达，被客户端误接受了，导致数据错乱，所以需要 2MSL 时间来使得数据包在网络中自然消失
 2. 如果最后一次挥手包丢失，那么服务端会重新发送一遍 FIN 包，如果 TIME_WAIT 过短导致重发后的 FIN 包不被接受，那么服务器会一直处于 LAST-ACK 状态，无法正确关闭
 
-TIME_WAIT 过多危害：1. 内存占用； 2. 端口占用
+## TIME_WAIT 过多危害
+
+1. 内存占用
+2. 端口占用
