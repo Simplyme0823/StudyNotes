@@ -1,0 +1,44 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .parent {
+        border: 1px solid blue;
+        zoom: 1;
+      }
+
+      .parent::after {
+        content: "";
+        clear: both;
+        display: block;
+        visibility: hidden;
+        height: 0;
+      }
+
+      .child {
+        float: left;
+        height: 200px;
+        width: 100%;
+        border: 1px solid red;
+      }
+      .clears {
+        clear: both;
+      }
+    </style>
+    <div class="parent">
+      <div class="child"></div>
+      <!-- <div class="clears"></div> -->
+    </div>
+    <!-- 1. clear both  -->
+    <!-- 2. 伪元素 after -->
+    <!-- 3. 双伪元素 -->
+    <!-- 4. overflow 属性 -->
+  </body>
+</html>

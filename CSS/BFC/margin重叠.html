@@ -1,0 +1,37 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    在此种情况下，两个div的margin重叠了
+    <style>
+      .mar {
+        margin: 20px;
+        border: 1px solid red;
+        /* padding: 20px; */
+        height: 20px;
+      }
+    </style>
+    <div class="mar"></div>
+    <div class="mar"></div>
+
+    以下两种都可以将重叠的margin分离
+    <style>
+      .container {
+        /* overflow: hidden; */
+        display: flex;
+      }
+    </style>
+    <div class="container">
+      <div class="mar" style="border: 1px solid blue"></div>
+    </div>
+    <div class="container">
+      <div class="mar" style="border: 1px solid blue"></div>
+    </div>
+  </body>
+</html>
