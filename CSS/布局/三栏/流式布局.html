@@ -1,0 +1,42 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .container div {
+        height: 500px;
+      }
+
+      .left {
+        float: left;
+        background-color: red;
+        width: 100px;
+      }
+      .right {
+        background-color: blue;
+        float: right;
+        width: 100px;
+      }
+      .mid {
+        background-color: pink;
+        word-wrap: break-word;
+        margin: 0 100px 0 100px;
+        word-break: break-all;
+      }
+    </style>
+    <div class="container">
+      <div class="left">left</div>
+      <div class="right">right</div>
+      <div class="mid">
+        ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+        <div style="border: 1px solid black"></div>
+      </div>
+    </div>
+  </body>
+</html>

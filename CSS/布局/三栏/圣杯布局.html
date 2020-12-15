@@ -1,0 +1,47 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .main,
+      .left,
+      .right {
+        height: 500px;
+        float: left;
+      }
+      .container {
+        padding: 0 200px;
+      }
+      .main {
+        width: 100%;
+        background-color: pink;
+      }
+      .left {
+        margin-left: -100%;
+        width: 200px;
+        position: relative;
+        left: -200px;
+        background-color: blue;
+      }
+      .right {
+        width: 200px;
+        position: relative;
+        right: -200px;
+        margin-left: -200px;
+        background-color: red;
+      }
+    </style>
+    <!-- 利用padding先规定main的大小，但是左右栏位置发生移动，需要利用利用左右positon:relative来调整位置 -->
+    <div class="container">
+      <div class="main">dd</div>
+      <div class="left"></div>
+      <div class="right"></div>
+    </div>
+  </body>
+</html>

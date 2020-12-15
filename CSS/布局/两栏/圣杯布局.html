@@ -24,26 +24,50 @@
       }
 
       .left {
-        width: 150px;
+        width: 200px;
         height: 200px;
         background: #990;
-        margin-left: -100%;
         float: left;
       }
-
+      /* 宽度为100%或者超过分辨率就会换行,maring-left为负数没有用*/
+      /*所以要用宽度100% + margin-right*/
       .right {
         float: left;
         width: 100%;
+        margin-right: -200px;
         height: 200px;
+        background: rgb(0, 132, 255);
       }
     </style>
+
     <div class="container">
-      <div class="right">
-        <div style="margin-left: 160px; height: 100%; background: #063">
-          <div style="float: right">ddd</div>
-        </div>
-      </div>
       <div class="left">dd</div>
+      <div class="right">
+        dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+      </div>
+    </div>
+
+    <style>
+      .left_ {
+        float: left;
+        width: 100%;
+        background-color: red;
+      }
+      .right_ {
+        float: left;
+        background-color: rgb(0, 132, 255);
+        margin-left: -200px;
+        width: 200px;
+      }
+      .container_ div {
+        height: 500px;
+      }
+    </style>
+    <div class="container_">
+      <div class="left_" style="word-wrap: break-word; word-break: break-all">
+        ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+      </div>
+      <div class="right_">dd</div>
     </div>
   </body>
 </html>
