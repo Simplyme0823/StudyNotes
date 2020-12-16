@@ -1,0 +1,28 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .too-long {
+        width: 60px;
+        height: 80px;
+        /* 禁止换行 */
+        white-space: nowrap;
+        /* 一行内容超出div限制后隐藏 */
+        overflow: hidden;
+        /* 添加省略号 */
+        text-overflow: ellipsis;
+      }
+    </style>
+
+    <div class="too-long">
+      太长啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦
+    </div>
+  </body>
+</html>

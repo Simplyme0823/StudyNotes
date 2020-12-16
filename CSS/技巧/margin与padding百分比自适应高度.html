@@ -17,8 +17,20 @@
         padding-top: 50%;
       }
     </style>
+    <div>
+      Note that in a horizontal flow, percentages on ‘margin-top’ and
+      ‘margin-bottom’ are relative to the width of the containing block, not the
+      height (and in vertical flow, ‘margin-left’ and ‘margin-right’ are
+      relative to the height, not the width). </br>Note that percentages on
+      ‘padding-top’ and ‘padding-bottom’ are relative to the width of the
+      containing block, not the height (at least in a horizontal flow; in a
+      vertical flow they are relative to the height).
+    </div>
+    <p>
+      此元素用来占位，当图片未加载或者加载失败的时候，避免布局坍塌，随后图片加载后导致屏幕闪烁
+    </p>
     <div id="container" class="placeholder"></div>
   </body>
 </html>
 应用：移动端适配，结合伪元素提前撑起父元素，避免图片闪烁
-https://segmentfault.com/a/1190000004231995
+https://segmentfault.com/a/1190000004231995 z

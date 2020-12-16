@@ -1,0 +1,40 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .multi {
+        position: relative;
+        line-height: 18px;
+        height: 36px;
+        overflow: hidden;
+        width: 160px;
+        background-color: green;
+      }
+      .multi::after {
+        content: "...";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 0 0px 1px 30px;
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0),
+          white 50%,
+          white
+        );
+      }
+    </style>
+    <p>思路：子绝父相，利用伪元素添加省略号</p>
+    <p>局限：文字一定会超出父元素</p>
+    <div class="multi">
+      太长啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦
+    </div>
+  </body>
+</html>

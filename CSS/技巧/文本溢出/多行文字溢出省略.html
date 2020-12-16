@@ -1,0 +1,28 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    只适用于-webkit-内核，移动端兼容好
+    <style>
+      .multi {
+        width: 60px;
+        height: 60px;
+        background-color: rgb(0, 255, 0);
+
+        display: -webkit-box;
+        /* 显示行数 */
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+    <div class="multi">太长啦啦啦啦啦啦啦拉拉拉拉啦</div>
+  </body>
+</html>

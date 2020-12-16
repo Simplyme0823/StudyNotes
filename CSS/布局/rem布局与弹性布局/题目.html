@@ -1,0 +1,48 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .p1 {
+        font-size: 16px;
+        line-height: 32px;
+      }
+      .s1 {
+        font-size: 2em;
+      }
+      .s2 {
+        font-size: 2em;
+        line-height: 2em;
+      }
+
+      .p2 {
+        font-size: 16px;
+        line-height: 2; /*自身大小2倍*/
+      }
+      .s5 {
+        font-size: 2em;
+      }
+      .s6 {
+        font-size: 2em;
+        line-height: 2em;
+      }
+    </style>
+    <div class="p1">
+      <div class="s1">font-size32px;line-height:32px 继承</div>
+      <div class="s2">font-size32px;line-height:64px</div>
+    </div>
+    <div class="p2">
+      <div class="s5">font-size32px;line-height:64px 继承</div>
+      <div class="s6">
+        font-size32px;line-height:64px
+        em非字体单位为自身字体大小，字体单位为父元素字体大小
+      </div>
+    </div>
+  </body>
+</html>

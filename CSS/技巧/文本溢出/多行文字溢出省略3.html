@@ -1,0 +1,57 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .wrap {
+        height: 40px;
+        line-height: 20px;
+        overflow: hidden;
+      }
+      .wrap::before {
+        float: left;
+        width: 5px;
+        content: "";
+        height: 40px;
+        background-color: pink;
+      }
+      .wrap .text {
+        float: right;
+        /* 左移覆盖住第一个div */
+        margin-left: -5px;
+        width: 100%;
+        word-break: break-all;
+        background-color: red;
+      }
+      .wrap::after {
+        float: right;
+        content: "...";
+        background-color: blue;
+        width: 3em;
+        height: 20px;
+        line-height: 20px;
+        /* 左移 置顶 */
+        margin-left: -3em;
+        position: relative;
+        /* 占位 左移后 再相对定位 移动到最右*/
+        left: 100%;
+        padding-right: 5px;
+        /* 移动到-1行 */
+        top: -20px;
+      }
+    </style>
+    <div class="wrap">
+      <div class="text">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos
+        labore sit vel itaque delectus atque quos magnam assumenda quod
+        architecto perspiciatis animi.
+      </div>
+    </div>
+  </body>
+</html>
