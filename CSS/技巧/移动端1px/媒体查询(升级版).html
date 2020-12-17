@@ -1,0 +1,64 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .border-1px {
+        border: 1px solid red;
+      }
+      .border-1px:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border: 1px solid green;
+        box-sizing: border-box;
+        transform-origin: left top;
+        -webkit-transform-origin: left top;
+        pointer-events: none;
+      }
+      @media (-webkit-min-device-pixel-ratio: 2) {
+        .border-1px:before {
+          width: 200%;
+          height: 200%;
+          -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+        }
+      }
+      @media (-webkit-min-device-pixel-ratio: 2.5) {
+        .border-1px:before {
+          width: 250%;
+          height: 250%;
+          -webkit-transform: scale(0.4);
+          transform: scale(0.4);
+        }
+      }
+      @media (-webkit-min-device-pixel-ratio: 2.75) {
+        .border-1px:before {
+          width: 275%;
+          height: 275%;
+          -webkit-transform: scale(1/2.75);
+          transform: scale(1/2.75);
+        }
+      }
+      @media (-webkit-min-device-pixel-ratio: 3) {
+        .border-1px:before {
+          width: 300%;
+          height: 300%;
+          -webkit-transform: scale(1/3);
+          transform: scale(1/3);
+        }
+      }
+    </style>
+    穷举法：利用媒体查询提前设置不同dpr对应的缩放设置
+    <div class="cell border-1px">cell</div>
+  </body>
+</html>

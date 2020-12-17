@@ -1,0 +1,38 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .cell {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+      }
+
+      /* 全部边框 */
+      .border-1px:after {
+        content: "";
+        position: absolute;
+        box-sizing: border-box;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        border: 1px solid rgb(255, 0, 0);
+        border-radius: 4px;
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transform-origin: top left;
+        transform-origin: top left;
+      }
+    </style>
+    缺点：不知道设备的DPR，导致缩放会不一致
+    <div class="cell border-1px">cell</div>
+  </body>
+</html>
