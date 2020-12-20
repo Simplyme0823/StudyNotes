@@ -2,8 +2,11 @@
 class Observe {
   constructor(obj) {
     this.value = obj;
+    // obj.__ob__ = JSON.stringify(obj);
+    obj.__ob__ = this;
     const keys = Object.keys(obj);
     const len = keys.length;
+    // console.log(obj);
     for (let i = 0; i < len; i++) {
       defineReactive(obj, keys[i]);
     }
@@ -26,7 +29,7 @@ function defineReactive(obj, key) {
     enumerable: true,
     configurable: true,
     get: function () {
-      console.log("child", child);
+      // console.log("child", child);
       return get ? get() : val;
     },
     set: function (newVal) {
@@ -41,6 +44,4 @@ function defineReactive(obj, key) {
 
 const res = observe({ a: { b: { c: { d: "d" } } } });
 
-console.log(res.value.a.b.c);
-
-console.log([1, 2].__proto__);
+console.log(res.value.__ob__);
