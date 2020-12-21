@@ -1,6 +1,6 @@
 <!-- @format -->
 
-Vue 内部顶一个 callbacks 变量，元素为回调函数
+Vue 内部定义一个 callbacks 变量，元素为回调函数
 
 通过 timerFunc 来调用这些函数
 
