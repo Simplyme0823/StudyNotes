@@ -1,0 +1,33 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .father {
+        height: 100px;
+        width: 100px;
+        border: 1px solid red;
+      }
+      .son {
+        background-color: black;
+        transition: height 1s;
+        height: 50px;
+      }
+    </style>
+    <script>
+      function test() {
+        console.log("fd");
+        document.querySelector(".son").style.height = "100px";
+      }
+    </script>
+    <div class="father" onclick="test()">
+      <div class="son">dd</div>
+    </div>
+  </body>
+</html>

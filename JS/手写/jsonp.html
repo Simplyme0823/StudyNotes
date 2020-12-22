@@ -26,7 +26,7 @@
         };
         const script = createScript(url, charset);
 
-        //监听加载成功的事件，获取数据，这个位置用了两个事件onload和onreadystatechange是为了兼容IE，
+        //监听加载并执行成功的事件，获取数据，这个位置用了两个事件onload和onreadystatechange是为了兼容IE，
         //因为IE9之前不支持onload事件，只支持onreadystatechange事件
         script.onload = script.onreadystatechange = function () {
           //若不存在readyState事件则证明不是IE浏览器，可以直接执行，若是的话，必须等到状态变为loaded或complete才可以执行
