@@ -19,7 +19,7 @@ if (!Function.prototype.bind)
       }
       const fBound = function (...args) {
         return fToBind.apply(
-          fNOP.prototype.isPrototypeOf(this) ? fToBind : otherThis,
+          fNOP.prototype.isPrototypeOf(this) ? this : otherThis,
           baseArgs.concat(args),
         );
       };
@@ -29,16 +29,13 @@ if (!Function.prototype.bind)
   })();
 
 Function.prototype.myBind = function (context, ...args1) {
-  const self = this;
-  const fNOP = function () {};
-  if (self.prototype) {
-    fNOP.prototype = self.prototype;
-  }
-
   function Fn(...args2) {
-    self.apply(this instanceof fNOP ? self : context, args1.concat(args2));
+    return self.apply(
+      this instanceof fNOP ? this : context,
+      args1.concat(args2),
+    );
   }
-  Fn.prototype = new fNOP();
+  Fn.prototype = Object.create(this.prototype);
   return Fn;
 };
 
