@@ -18,3 +18,5 @@ function xunhuan(head) {
     if (node.right) queue.push(node.right);
   }
 }
+
+// 层次遍历
