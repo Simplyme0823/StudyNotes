@@ -26,11 +26,12 @@ Array.prototype.myReduce = function (fn) {
     if (k >= len) {
       throw new TypeError("Reduce of empty array with no initial value");
     }
-
+    // 将 k 变成 k+1
     value = o[k++];
   }
 
   // 直接 将value传入
+  // 这里的
   while (k < len) {
     if (k in o) {
       value = fn(value, o[k], k, o);

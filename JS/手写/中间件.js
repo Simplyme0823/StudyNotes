@@ -1,26 +1,5 @@
 /** @format */
 
-// function compose(middleware) {
-//   return function (context, next) {
-//     let index = -1;
-//     return dispatch(0);
-//     function dispatch(i) {
-//       if (i <= index) return Promise.reject("next called two times");
-//       index = i;
-//       if (i > middleware.length) return;
-//       fn = middleware[i];
-//       if (i == middleware.length) fn = next;
-//       if (!fn) return Promise.resolve();
-//       try {
-//         // 中间件执行抛出的错误会被捕捉
-//         return Promise.resolve(fn(context, dispatch.bind(null, i + 1)));
-//       } catch (err) {
-//         return Promise.reject(err);
-//       }
-//     }
-//   };
-// }
-
 function compose(middleware) {
   return function (context, next) {
     // index就是为了防止多次调用next()

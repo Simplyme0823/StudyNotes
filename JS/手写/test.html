@@ -1,0 +1,78 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function throttle__(options) {
+        const { cb, fn, wait, tailing } = options;
+        let timer = null;
+        let last = 0;
+        function run(context, ...args) {
+          const res = fn.apply(context, args);
+          if (cb) {
+            cb(res);
+          }
+        }
+        function Fn() {
+          const context = this;
+          let now = new Date().getTime();
+          if (now - last > wait) {
+            if (timer) {
+              clearTimeout(timer);
+              timer = null;
+            }
+            last = now;
+            run(context, arguments);
+          } else if (tailing && timer === null) {
+            timer = setTimeout(() => {
+              run(context, arguments);
+              timer = null;
+            }, wait);
+          }
+        }
+        return Fn;
+      }
+
+      function debounce(options) {
+        const { wait, fn, cb, imm } = options;
+        let timer = null;
+        function run(context, ...args) {
+          const res = fn.apply(context, args);
+          if (cb) {
+            cb(res);
+          }
+        }
+        function Fn() {
+          const context = this;
+          const arg = arguments;
+          if (timer) clearTimeout(timer);
+
+          if (imm) {
+            let callNow = !timer;
+            if (callNow) {
+              run(context, arg);
+            }
+            timer = setTimeout(() => {
+              timer = null;
+            }, wait);
+          } else {
+            timer = setTimeout(() => {
+              run(context, arg);
+            }, wait);
+          }
+        }
+        return Fn;
+      }
+
+      const click = () => console.log("click");
+      var test = debounce({ fn: click, wait: 2000, imm: true });
+    </script>
+    <button onclick="test()">button</button>
+  </body>
+</html>
