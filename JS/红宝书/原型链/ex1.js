@@ -19,6 +19,8 @@ Person.prototype = {
 };
 console.log(person1.name); //1
 console.log(person1.__proto__.constructor); // Person
+
+// person1是在原型对象重写前写的
 console.log(person1.__proto__.name); //3 正确答案是2
 
 var person2 = new Person();

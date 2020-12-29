@@ -6,30 +6,31 @@ Son.prototype = new Father();
 Son.prototype.constructor = Son;
 const son = new Son();
 
-// Father {}
+// Father{}
 console.log(Father.prototype);
 // Function
 console.log(Father.__proto__);
-// Son { constructor: function Son(){}}
+// Son {}
 console.log(Son.prototype);
-// undefined
+// Object.prototype ×  undefined √
 console.log(Son.prototype.prototype);
 // Function
-// ES5中 子类构造函数的__proto__指向Function
 console.log(Son.__proto__);
 // undefined
 console.log(son.prototype);
-// Son { constructor: function Son(){}}
+// Son {}
 console.log(son.__proto__);
 
 class Super {}
 class Sub extends Super {}
 const sub = new Sub();
-// Super {}
+// sub.prototype = "prototype";
+
+// Super{}
 console.log(Super.prototype);
 // Function
 console.log(Super.__proto__);
-// Sub {}
+// Sub{}
 console.log(Sub.prototype);
 // Function Super
 console.log(Sub.__proto__);

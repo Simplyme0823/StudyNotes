@@ -36,5 +36,8 @@ get(); //4 √
 foo().get(); // 1 √
 get(); //1
 new foo.get(); //2 √   点运算符优先级为19 不带参数的new优先级为18 先执行foo.get
-new foo().get(); //1 × 3 带参数的new 优先级为19 点运算符优先级为19 左往右运算  先new得到对象再.get
-new new foo().get(); // × 3 两个一元运算符 由右往左运算 new (new foo().get())
+const res = new foo().get(); //1 × 3 带参数的new 优先级为19 点运算符优先级为19 左往右运算  先new得到对象再.get
+console.log(res);
+
+// 先new foo() 得到 foo{}类型的对象， 然后 new {}.get()
+new new foo().get(); // × 3 两个一元运算符 由右往左运算 new (new foo()).get()

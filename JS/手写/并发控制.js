@@ -34,6 +34,7 @@ function run(promiseArr, cb) {
   }, Promise.resolve());
   chain.then(cb);
 }
+
 run(input, cb);
 
 // 多个请求
