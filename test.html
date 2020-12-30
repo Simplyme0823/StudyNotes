@@ -1,0 +1,233 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function debounce(options) {
+        const { wait = 0, imm = false, fn, cb } = options;
+        let timer = null;
+        function run(context, ...args) {
+          const res = fn.apply(context, args);
+          if (cb) {
+            cb(res);
+          }
+        }
+
+        return function () {
+          if (timer) clearTimeout(timer);
+          if (imm) {
+            let callNow = !timer;
+            if (callNow) run(this, arguments);
+            timer = setTimeout(() => {
+              timer = null;
+            }, wait);
+          } else {
+            timer = setTimeout(() => {
+              run(this, arguments);
+            }, wait);
+          }
+        };
+      }
+
+      function throttle(options) {
+        const { fn, cb, wait, tailing } = options;
+        let timer = null;
+        let last = 0;
+        function run(context, ...args) {
+          const res = fn.apply(context, args);
+          if (cb) {
+            cb(res);
+          }
+        }
+
+        return function () {
+          const now = new Date().getTime();
+          if (now - last > wait) {
+            run(this, arguments);
+            last = now;
+            if (timer) {
+              clearTimeout(timer);
+              timer = null;
+            }
+          } else if (timer === null && tailing) {
+            timer = setTimeout(() => {
+              run(this, arguments);
+              timer = null;
+            }, wait);
+          }
+        };
+      }
+
+      function instanof(subType, superType) {
+        const proto = Object.getPrototypeOf(subType);
+        const prototype = superType.prototype;
+        while (proto !== null) {
+          if (proto === prototype) {
+            return true;
+          }
+          proto = Object.getPrototypeOf(proto);
+        }
+        return false;
+      }
+
+      console.log(instanof(Array, Function), "instanceof polyfill");
+
+      function myBind() {
+        const fn = arguments[0];
+        const context = arguments[1];
+        const args1 = Array.prototype.slice.call(arguments, 2);
+
+        function F() {
+          const args2 = Array.prototype.slice.call(arguments);
+          return fn.apply(
+            // 这里是上下文
+            this instanceof F ? this : context,
+            args1.concat(args2),
+          );
+        }
+        F.prototype = Object.create(fn.prototype);
+        return F;
+      }
+
+      function toBind() {
+        console.log(this.name, "toBind");
+      }
+
+      const res = myBind(toBind, { name: "name" });
+      const ins = new res();
+      console.log("res", res());
+      console.log(ins);
+
+      function myApply() {
+        const fn = arguments[0];
+        const context = arguments[1];
+        const arg1 = Array.from(arguments).slice(2);
+
+        context.fn = fn;
+        const res = context.fn(...arg1);
+        delete context.fn;
+        return res;
+      }
+
+      function myNew(superType, ...args) {
+        const obj = {};
+        Object.setPrototypeOf(obj, superType.prototype);
+        const res = superType.apply(obj, args);
+        return res instanceof Object ? res : obj;
+      }
+
+      function testNew(name) {
+        this.name = name;
+      }
+      const testNewIns = new testNew("ins1");
+      const testNewIns2 = myNew(testNew, "ins2");
+      console.log("new", testNewIns, testNewIns2);
+
+      let timer;
+      function mockSetInterval(cb, wait) {
+        timer = setTimeout(() => {
+          cb();
+          mockSetInterval(cb, wait);
+        }, wait);
+      }
+
+      mockSetInterval(() => {
+        console.log("mockSetInterval");
+      }, 1000);
+
+      setTimeout(() => {
+        clearTimeout(timer);
+        timer = null;
+      }, 10000);
+      var test = debounce({
+        fn: () => console.log("click"),
+        wait: 1000,
+        imm: false,
+      });
+
+      var testThrottle = throttle({
+        fn: () => console.log("click"),
+        wait: 2000,
+        tailing: true,
+      });
+    </script>
+
+    <div onclick="test()">debounce</div>
+    <div onclick="testThrottle()">throttle</div>
+
+    <script>
+      function myObjectCreate(input) {
+        function fn() {}
+        fn.prototype = input;
+        return new fn();
+      }
+      const toCreatedObj = { name: "ObjectCreate" };
+      const res1 = myObjectCreate(toCreatedObj);
+      const res2 = Object.create(toCreatedObj);
+      console.log(res1, res2);
+
+      function myObjectAssign(target, ...args) {
+        const len = args.length;
+        for (let i = 0; i < len; i++) {
+          if (args[i] !== null && typeof args[i] === "object") {
+            Reflect.ownKeys(args[i]).forEach(key => {
+              if (Object.getOwnPropertyDescriptor(args[i], key).enumerable) {
+                target[key] = args[i][key];
+              }
+            });
+          }
+        }
+        return target;
+      }
+      const source = { name: { name: "name" } };
+      const copy = Object.assign({}, source);
+      const copy1 = myObjectAssign({}, source);
+      console.log("copy", copy, copy1);
+
+      function myReduce(input, cb, init) {
+        let res;
+        let k;
+        if (init) {
+          res = init;
+          k = 0;
+        } else {
+          res = input[0];
+          k = 1;
+        }
+        const len = input.length;
+        for (let i = k; i < len; i++) {
+          res = cb(res, input[i], i, input);
+        }
+        return res;
+      }
+      const testArr = [1, 2, 3, 4];
+      const sum = testArr.reduce((prev, cur) => prev + cur);
+      const sum1 = myReduce(testArr, (prev, cur) => prev + cur, 10);
+      console.log(sum, sum1);
+
+      function deepClone(target, map = new Map()) {
+        if (map.get(target)) {
+          return map.get(target);
+        }
+        if (typeof target === "object" && target !== null) {
+          const isArray = Array.isArray(target);
+          const cloneVal = isArray ? [] : {};
+          Object.keys(target).forEach(keys || target, (val, key) => {
+            cloneVal[key] = deepClone(target[key], map);
+          });
+          return cloneVal;
+        } else {
+          return target;
+        }
+      }
+
+      // toto flat
+    </script>
+  </body>
+</html>

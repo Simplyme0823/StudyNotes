@@ -36,7 +36,7 @@ function deepClone(origin) {
 
 // 考虑循环引用
 
-function deepClone(origin, map = new Map()) {
+function deepClone_(origin, map = new Map()) {
   if (typeof origin === "object" && origin !== null) {
     if (map.get(origin)) {
       return map.get(origin);
@@ -44,21 +44,18 @@ function deepClone(origin, map = new Map()) {
 
     const isArray = Array.isArray(origin);
     const cloneVal = isArray ? [] : {};
-
     map.set(origin, cloneVal);
-
-    const keys = isArray ? undefined : Object.keys(origin);
-    forEach(keys || origin, (val, key) => {
-      if (keys) {
-        key = val;
-      }
-      cloneVal[key] = deepClone(origin[key], map);
+    const keys = Object.keys(origin);
+    keys.forEach(key => {
+      cloneVal[key] = deepClone_(origin[key], map);
     });
     return cloneVal;
   } else {
     return origin;
   }
 }
+
+const orign = { a: { b: { c: { d: {} } } } };
 
 function forEach(array, iteratee) {
   let index = -1;
@@ -123,5 +120,5 @@ const target = {
 };
 target.filed5 = target;
 
-const res = deepClone(target);
-console.log(res);
+const res = deepClone_(target);
+console.log("res", res);
