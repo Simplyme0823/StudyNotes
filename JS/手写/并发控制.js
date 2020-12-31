@@ -54,3 +54,102 @@ function runN(promiseArr, n, cb) {
 }
 
 // runN(input, 2, cb);
+
+// 最多同时run n个
+function loopRequest(promiseArr, max = 3) {
+  const taskPool = [];
+  const loopFn = async tasks => {
+    if (tasks.length === 0) return;
+    const currentTask = tasks.shift();
+
+    try {
+      await currentTask.request();
+    } catch (err) {
+      this.pauses.push(currentTask);
+    }
+
+    return loopFn(tasks);
+  };
+
+  while (max--) {
+    taskPool.push(loopFn(promiseArr));
+  }
+  return Promise.all(taskPool);
+}
+
+class LoopRequest {
+  constructor(limit) {
+    this.limit = limit;
+    this.taskQueue = [];
+    this.currentTaskCounts = 0;
+  }
+  addTask(fn) {
+    return new Promise((resolve, reject) => {
+      this.taskQueue.push({ fn, resolve, reject });
+      // this.currentTaskCounts++;
+      this.runTask();
+    });
+  }
+  runTask() {
+    if (this.currentTaskCounts < this.limit && this.taskQueue.length > 0) {
+      const { resolve, fn, reject } = this.taskQueue.shift();
+      fn()
+        .then(res => {
+          console.log("res", res);
+          resolve(res);
+          this.currentTaskCounts--;
+          this.runTask();
+        })
+        .catch(err => {
+          reject(err);
+          this.currentTaskCounts--;
+          this.runTask();
+        });
+      // 在这里调节
+      this.currentTaskCounts++;
+    }
+  }
+}
+
+const limitRun = new LoopRequest(2);
+
+const fn1 = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("1", new Date().getTime());
+      resolve();
+    }, 1000);
+  });
+};
+
+const fn2 = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("2", new Date().getTime());
+      resolve();
+    }, 500);
+  });
+};
+
+const fn3 = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("3", new Date().getTime());
+      resolve();
+    }, 300);
+  });
+};
+
+const fn4 = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("4", new Date().getTime());
+      resolve();
+    }, 400);
+  });
+};
+
+limitRun.addTask(fn1);
+limitRun.addTask(fn2);
+limitRun.addTask(fn3);
+limitRun.addTask(fn4);

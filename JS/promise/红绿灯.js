@@ -45,3 +45,25 @@ function run() {
     .then(() => promiseYellow());
   // .then(run); 递归
 }
+
+// 使用setInterval
+
+function trafficControl() {
+  let current = 0;
+  const borders = { red: 3, green: 5, yellow: 6 };
+  setInterval(() => {
+    if (current >= 0 && current < 3) {
+      console.log("红");
+    } else if (current >= 3 && current < 5) {
+      console.log("绿");
+    } else {
+      console.log("黄");
+    }
+    current++;
+    if (current > 5) {
+      current = 0;
+    }
+  }, 1000);
+}
+
+trafficControl();

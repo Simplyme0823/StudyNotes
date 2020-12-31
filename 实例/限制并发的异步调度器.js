@@ -20,7 +20,7 @@ class Scheduler {
 
   requestTask() {
     if (this.reaminTasks.length === 0) return;
-    while (this.alive < this.limit && this.reaminTasks.length) {
+    if (this.alive < this.limit && this.reaminTasks.length) {
       let { promise, resolve } = this.reaminTasks.shift();
       promise().then(() => {
         resolve();
@@ -39,7 +39,9 @@ const timeout = time =>
 
 const scheduler = new Scheduler();
 const addTask = (time, order) => {
-  scheduler.add(() => timeout(time)).then(() => console.log(order));
+  scheduler
+    .add(() => timeout(time))
+    .then(() => console.log(order, new Date().getTime()));
 };
 
 addTask(1000, "1");
