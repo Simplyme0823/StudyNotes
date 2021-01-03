@@ -1,5 +1,8 @@
 /** @format */
 
+// funciton fn 重复声明，后面的会覆盖前面的值
+// var fn 重复声明，后面的声明会被覆盖
+
 fn(); //5
 function fn() {
   console.log(1);

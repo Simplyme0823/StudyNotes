@@ -40,6 +40,8 @@ console.log(a, window.a);
 ## 块作用域内的函数声明 + 赋值
 
 ```javascript
+// var a  或者 a 或者不写结果是一样的 ，如下
+
 // undefined undefined
 console.log(a, window.a);
 {

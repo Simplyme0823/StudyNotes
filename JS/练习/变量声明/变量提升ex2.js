@@ -1,22 +1,4 @@
 /** @format */
-// 例 1
-function foo(params) {
-  console.log(params);
-}
-
-var foo = "foo";
-console.log(foo);
-
-// 例 2
-var bar = "bar";
-
-function bar(params) {
-  console.log(params);
-}
-
-console.log(bar);
-
-// 例 3
 
 test(10);
 function test(params) {
@@ -25,8 +7,11 @@ function test(params) {
   console.log(test); // 10
   var test; // 注意有无这行的区别
 }
+
 console.log(test); // 这里全局寻找test变量为test函数体
+
 test = 1;
+
 console.log(test); // 1
 
 // 总结

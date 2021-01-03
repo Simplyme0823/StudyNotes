@@ -21,4 +21,5 @@ function func(
 
 func(5);
 
+// 因为内部有了x，即形参是x, 所有不会同步
 console.log(x); //1

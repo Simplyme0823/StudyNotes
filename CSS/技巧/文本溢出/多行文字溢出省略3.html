@@ -9,11 +9,13 @@
   </head>
   <body>
     <style>
+      /* 超过固定边界溢出 */
       .wrap {
         height: 40px;
         line-height: 20px;
         overflow: hidden;
       }
+      /* 高度占位 */
       .wrap::before {
         float: left;
         width: 5px;
@@ -21,6 +23,7 @@
         height: 40px;
         background-color: pink;
       }
+
       .wrap .text {
         float: right;
         /* 左移覆盖住第一个div */
@@ -29,6 +32,7 @@
         word-break: break-all;
         background-color: red;
       }
+
       .wrap::after {
         float: right;
         content: "...";

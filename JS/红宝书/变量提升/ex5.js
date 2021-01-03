@@ -1,6 +1,6 @@
 /** @format */
 
-console.log(foo);
+console.log(foo); // Function foo ,var 声明已存在的变量时会被忽略
 foo(); // undefined 12
 var foo = 10;
 // foo(); // 报错

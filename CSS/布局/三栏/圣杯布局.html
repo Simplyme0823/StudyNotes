@@ -16,7 +16,7 @@
         float: left;
       }
       .container {
-        padding: 0 200px;
+        margin: 0 200px;
       }
       .main {
         width: 100%;
@@ -39,9 +39,12 @@
     </style>
     <!-- 利用padding先规定main的大小，但是左右栏位置发生移动，需要利用利用左右positon:relative来调整位置 -->
     <div class="container">
-      <div class="main">dd</div>
-      <div class="left"></div>
-      <div class="right"></div>
+      <div class="main">
+        margin + float left / maring -100% /position:relative + float /
+        margin-left:- /position:relative
+      </div>
+      <div class="left">dd</div>
+      <div class="right">right</div>
     </div>
   </body>
 </html>

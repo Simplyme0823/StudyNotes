@@ -1,6 +1,6 @@
 /** @format */
 
-const input = [1, [2, 3], [4, [5, [6]]]];
+const input = [1, [2, 3], [4, [5, [6, [7]]]]];
 
 // 1. toString
 function flatByString(input) {
@@ -8,18 +8,18 @@ function flatByString(input) {
 }
 
 // 2. 递归
-let res = [];
+let res1 = [];
 function flatByRe(input) {
   input.forEach(item => {
     if (Array.isArray(item)) {
       flatByRe(item);
     } else {
-      res.push(item);
+      res1.push(item);
     }
   });
 }
-// flatByRe(input);
-// console.log(res);
+flatByRe(input);
+console.log(res1, "res1");
 
 // 3. 循环, apply方法传入数组，解构
 function flatByConcat(input) {
@@ -31,9 +31,9 @@ function flatByConcat(input) {
 console.log(flatByConcat(input));
 
 // 4. 递归 扩展运算符
+const res = [];
 function flatByRe_(input) {
-  const res = [];
-  const flag = true;
+  flag = true;
   input.forEach(item => {
     if (Array.isArray(item)) {
       res.push(...item);
@@ -54,3 +54,5 @@ function fn(arr) {
     return prev.concat(Array.isArray(cur) ? fn(cur) : cur);
   });
 }
+
+// ES5 大多数数组方法对空位的处理都会选择跳过空位包括：forEach(), filter(), reduce(), every() 和 some() 都会跳过空位。

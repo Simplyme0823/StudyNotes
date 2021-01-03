@@ -1,0 +1,58 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const input = [1, [2, [3, [4]]]];
+      // 第一种
+      function flat(array, n) {
+        n = !n && n !== 0 ? Infinity : n;
+        while (array.some(item => Array.isArray(item)) && n > 0) {
+          array = Array.prototype.concat.apply([], array);
+          n--;
+        }
+        return array;
+      }
+      console.log(flat(input, 1));
+      console.log(flat(input));
+
+      // 第二种
+      function flat_(arr, n) {
+        n = !n && n !== 0 ? Infinity : n;
+        if (n > 0) {
+          return arr.reduce((prev, cur) => {
+            return prev.concat(Array.isArray(cur) ? flat_(cur, n - 1) : cur);
+          }, []);
+        }
+        return arr;
+      }
+      console.log(flat_(input, 1));
+      console.log(flat_(input));
+
+      // 第三种
+      let res = [];
+      function flat__(arr) {
+        arr.forEach(item => {
+          if (Array.isArray(item)) {
+            flat__(item);
+          } else {
+            res.push(item);
+          }
+        });
+      }
+
+      // 第四种
+      let res_ = [];
+      function flat___(arr) {
+        let flag = true;
+        arr.forEach(item => {});
+      }
+    </script>
+  </body>
+</html>

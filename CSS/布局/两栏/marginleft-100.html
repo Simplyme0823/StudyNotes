@@ -1,0 +1,47 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .container {
+        clear: both;
+      }
+
+      .container::before,
+      .container::after {
+        display: block;
+        content: "";
+      }
+      .right {
+        float: left;
+        background-color: red;
+        width: 100%;
+        height: 500px;
+      }
+      .left {
+        float: left;
+        width: 200px;
+        margin-left: -100%;
+        background-color: blue;
+        height: 500px;
+      }
+      .content {
+        position: relative;
+        left: 200px;
+      }
+    </style>
+
+    <div class="container">
+      <div class="right">
+        <div class="content">dddddddddddddd</div>
+      </div>
+      <div class="left">d</div>
+    </div>
+  </body>
+</html>
