@@ -15,3 +15,9 @@ Array.prototype.myMap = function (fn) {
   }
   return newArr;
 };
+
+// 应用
+var elems = document.querySelectorAll("select option:checked");
+var values = Array.prototype.map.call(elems, function (obj) {
+  return obj.value;
+});

@@ -44,7 +44,8 @@ function hasOwn(obj, key) {
 // 1. initData ---> 调用observe 观察vm.data数据
 // 2. observer ---> new Observe
 // 3. Observe constructor ---> defineReactive
-function observe(value, asRootData) {
+// function observe(value, asRootData) {
+function observe(value) {
   // 非数组或非对象 非vnode
   if (!isObject(value) || value instanceof VNode) {
     return;
@@ -59,9 +60,9 @@ function observe(value, asRootData) {
   ) {
     ob = new Observer(value);
   }
-  if (asRootData && ob) {
-    ob.vmCount++;
-  }
+  // if (asRootData && ob) {
+  //   ob.vmCount++;
+  // }
   return ob;
 }
 

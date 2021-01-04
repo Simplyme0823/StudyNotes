@@ -19,40 +19,62 @@
         }
         return array;
       }
-      console.log(flat(input, 1));
-      console.log(flat(input));
+      console.log(flat(input, 1), flat(input));
 
-      // 第二种
-      function flat_(arr, n) {
+      // 第二种递归
+      function flat_(array, n) {
         n = !n && n !== 0 ? Infinity : n;
         if (n > 0) {
-          return arr.reduce((prev, cur) => {
-            return prev.concat(Array.isArray(cur) ? flat_(cur, n - 1) : cur);
+          return array.reduce((prev, cur) => {
+            return prev.concat(Array.isArray(cur) ? flat_(cur, --n) : cur);
           }, []);
+        } else {
+          return array;
         }
-        return arr;
       }
-      console.log(flat_(input, 1));
-      console.log(flat_(input));
+      console.log(flat_(input), flat_(input, 1));
 
-      // 第三种
-      let res = [];
-      function flat__(arr) {
-        arr.forEach(item => {
-          if (Array.isArray(item)) {
-            flat__(item);
+      // 第三种 forEach + 递归
+      // forEach会自动过滤空数组
+      let res1 = [];
+
+      function flat__(array, n) {
+        n = !n && n !== 0 ? Infinity : n;
+        array.forEach(item => {
+          if (Array.isArray(item) && n > 0) {
+            flatOnce = flat__(item, --n);
           } else {
-            res.push(item);
+            res1.push(item);
           }
         });
       }
+      flat__(input, 1);
+      console.log(res1);
 
-      // 第四种
-      let res_ = [];
-      function flat___(arr) {
-        let flag = true;
-        arr.forEach(item => {});
+      // 第四种 forEach + 扩展运算符
+      let res2 = [];
+      function flat___(array) {
+        array.forEach(item => {
+          if (Array.isArray(item)) {
+          } else {
+            res2.push(item);
+          }
+        });
       }
+      function add(...args1) {
+        let totalArgs = args1;
+        return function Fn(...args2) {
+          if (args2.length === 0) {
+            return totalArgs.reduce((prev, cur) => prev + cur);
+          } else {
+            totalArgs = totalArgs.concat(args2);
+            return Fn;
+          }
+        };
+      }
+
+      const addRest = add(1)(2, 3, 4)(5);
+      console.log(addRest());
     </script>
   </body>
 </html>

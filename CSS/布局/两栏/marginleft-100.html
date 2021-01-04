@@ -11,8 +11,8 @@
     <style>
       .container {
         clear: both;
+        margin: 0 0 0 200px;
       }
-
       .container::before,
       .container::after {
         display: block;
@@ -30,17 +30,13 @@
         margin-left: -100%;
         background-color: blue;
         height: 500px;
-      }
-      .content {
         position: relative;
-        left: 200px;
+        left: -200px;
       }
     </style>
 
     <div class="container">
-      <div class="right">
-        <div class="content">dddddddddddddd</div>
-      </div>
+      <div class="right">dddd</div>
       <div class="left">d</div>
     </div>
   </body>

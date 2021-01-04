@@ -33,6 +33,7 @@ Array.prototype.myReduce = function (fn) {
   // 直接 将value传入
   // 这里的
   while (k < len) {
+    // 跳过稀数组
     if (k in o) {
       value = fn(value, o[k], k, o);
     }
