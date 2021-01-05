@@ -1,0 +1,31 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .center {
+        position: absolute;
+        padding: 25% 0;
+        left: 50%; /* 父元素 */
+        top: 50%;
+        width: calc(100% - 20px);
+        background-color: black;
+        color: white;
+        transform: translateX(-50%) translateY(-50%); /* 自身 */
+        height: 0;
+        text-align: center;
+      }
+    </style>
+    <div class="center">aa</div>
+  </body>
+</html>

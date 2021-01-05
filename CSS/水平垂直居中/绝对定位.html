@@ -19,5 +19,28 @@
       }
     </style>
     <div class="content"></div>
+    绝对定位的原点：padding的左上角，紧贴内边框
+    <style>
+      #d1 {
+        width: 300px;
+        height: 300px;
+        margin: 40px;
+        border: 40px solid red;
+        padding: 40px;
+        position: relative;
+        background-color: #eee;
+      }
+      #d2 {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: yellow;
+      }
+    </style>
+    <div id="d1">
+      <div id="d2"></div>
+    </div>
   </body>
 </html>

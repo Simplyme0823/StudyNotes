@@ -12,6 +12,7 @@
 3. 增加了与缓存相关的请求头 cache-controle etag
 4. 带宽优化，range 请求头加入支持断点续传功能
 5. Host 请求头，没有 Host 请求头，会报错
+6. 缓存处理：E-tag,if-none-match 等缓存信息
 
 ## HTTP1.1 缺点
 
