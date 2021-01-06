@@ -31,3 +31,7 @@ no-transform：告诉代理服务器不能修改响应包体内
 
 用于 HTTP1.0
 https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Pragma
+
+### 缓存总结
+
+https://juejin.cn/post/6854573208104861703

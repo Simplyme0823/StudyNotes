@@ -1,0 +1,66 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    https://juejin.cn/post/6858611678897324040
+    https://segmentfault.com/a/1190000022331737
+    <script>
+      function readAsBlob(file, type) {
+        return new Promise((resolve, reject) => {
+          let reader = new FileReader();
+
+          reader.onload = function (event) {
+            resolve(event.target.result);
+          };
+
+          switch (type) {
+            case "ArrayBuffer":
+              reader.readAsArrayBuffer(file);
+              break;
+            case "DataURL":
+              reader.readAsDataURL(file);
+              break;
+            case "Text":
+              reader.readAsText(file, "utf-8");
+              break;
+            default:
+              break;
+          }
+        });
+      }
+
+      function dataURLToBlob(dataURL) {
+        let bytes = atob(dataURL.split(",")[1]);
+        let arrayBuffer = new ArrayBuffer(bytes.length);
+        let uInt8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < bytes.length; i++) {
+          uInt8Array[i] = bytes.charCodeAt[i];
+        }
+        let blob = new Blob([arrayBuffer], { type: "image/png" });
+        return blob;
+      }
+
+      function upload(dataURL) {
+        let blob = dataURLToBlob(dataURL);
+        let formData = new FormData();
+        formData.append("avatar", blob);
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/upload", true);
+        xhr.send();
+      }
+    </script>
+
+    为什么上传文件时要设置为multipart/form-data？
+    我们知道上传文件的时候media-type要设置为
+    multipart/form-data，这是为什么呢？为什么不已有使用application/x-www-form-urlencoded呢？
+    因为此类型不适合用于传输大型二进制数据或者包含非ASCII字符的数据。
+    平常我们使用这个类型都是把表单数据使用url编码后传送给后端，二进制文件当然没办法一起编码进去了。
+    所以multipart/form-data就诞生了，专门用于有效的传输文件。
+  </body>
+</html>
