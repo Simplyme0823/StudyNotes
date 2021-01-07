@@ -15,6 +15,7 @@
         charset && script.setAttribute("charset", charset);
         script.setAttribute("src", url);
         script.async = true;
+        return script;
       }
 
       function jsonp(url, onsuccess, onerror, charset) {
