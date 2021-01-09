@@ -10,7 +10,7 @@
   <body>
     <script>
       const targetWindow = window.open(
-        "http://127.0.0.1:5500/%E9%A2%98%E7%9B%AE/postMessageB.html",
+        "http://127.0.0.1:5500/%E5%AE%9E%E4%BE%8B/postMessageB.html",
       );
       setTimeout(() => {
         targetWindow.postMessage("open B");
@@ -20,6 +20,8 @@
         console.log(e.data);
       }
       window.addEventListener("message", receiveMessage, false);
+      // 跨域
+      targetWindow.postMessage("Test", "http://www.biadu.com");
     </script>
   </body>
 </html>

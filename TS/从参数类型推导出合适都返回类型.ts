@@ -22,3 +22,4 @@ const emptyMap = map();
 
 const mapNumberToString = map((v: number) => "str");
 const result3 = mapNumberToString([1, 2, 3]);
+console.log(result3);

@@ -51,16 +51,6 @@
       flat__(input, 1);
       console.log(res1);
 
-      // 第四种 forEach + 扩展运算符
-      let res2 = [];
-      function flat___(array) {
-        array.forEach(item => {
-          if (Array.isArray(item)) {
-          } else {
-            res2.push(item);
-          }
-        });
-      }
       function add(...args1) {
         let totalArgs = args1;
         return function Fn(...args2) {

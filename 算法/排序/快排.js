@@ -11,22 +11,16 @@ function quickSort(arr, start, end) {
 function partition(arr, start, end) {
   if (!arr) return;
   let pivot = arr[start];
-  let left = start;
-  let right = end;
 
-  while (left != right) {
-    while (left < right && arr[right] > pivot) right--;
-    while (left < right && arr[left] <= pivot) left++;
-    if (left < right) {
-      let temp = arr[left];
-      arr[left] = arr[right];
-      arr[right] = temp;
-    }
+  while (start != end) {
+    while (start < end && arr[end] > pivot) end--;
+    arr[start] = arr[end];
+    while (start < end && arr[start] <= pivot) start++;
+    arr[end] = arr[start];
   }
   // 最后一步
-  arr[start] = arr[left];
-  arr[left] = pivot;
-  return left;
+  arr[start] = pivot;
+  return start;
 }
 
 let a = [1, 5, 0, 6, 4];
