@@ -28,3 +28,15 @@ async 异步加载，加载完立即执行
 也可以给模块标签添加 async 属性。这样影响就是双重的：不仅模块执行顺序不再与 script 标签在页面中的顺序绑定，模块也不会等待文档完成解析才执行。
 
 **不过，入口模块仍必须等待其依赖加载完成。**
+
+### defer 与 DOMContentLoaded
+
+defer 脚本执行完成之后，DOMContentLoaded 事件触发。
+
+### async 与 DOMContentLoaded
+
+如果 script 标签中包含 async，则 HTML 文档构建不受影响，解析完毕后，DOMContentLoaded 触发，而不需要等待 async 脚本执行、样式表加载等等。
+
+## 参考
+
+https://zhuanlan.zhihu.com/p/25876048

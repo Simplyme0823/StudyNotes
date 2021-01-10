@@ -1,222 +1,153 @@
 /** @format */
 
-const PENDING = "pending";
-const REJECTED = "rejected";
-const RESOLVED = "resolved";
+class MyPromise {
+  constructor(executor) {
+    this.status = "pending";
+    this.val = undefined;
+    this.reason = undefined;
+    this.onResovedCallbacks = [];
+    this.onRejectedCallbacks = [];
 
-function myPromise(executor) {
-  this.STATUS = PENDING;
-  this.data = "";
-  this.cbs = [];
+    const resolve = val => {
+      if (this.status !== "pending") return;
+      this.status = "fulfilled";
+      this.val = val;
+      this.onResovedCallbacks.forEach(fn => fn());
+    };
 
-  const resolve = value => {
-    if (this.STATUS !== PENDING) return;
-    this.STATUS = RESOLVED;
-    this.data = value;
-    setTimeout(() => {
-      this.cbs.forEach(cb => {
-        cb.onfullfilled();
-      });
-    });
-  };
+    const reject = val => {
+      if (this.status !== "pending") return;
+      this.status = "rejected";
+      this.reason = val;
+      this.onRejectedCallbacks.forEach(fn => fn());
+    };
 
-  const reject = reason => {
-    if (this.STATUS !== PENDING) return;
-    this.STATUS = REJECTED;
-    this.data = reason;
-    setTimeout(() => {
-      this.cbs.forEach(cb => {
-        cb.onRejected();
-      });
-    });
-  };
-
-  try {
-    executor(resolve, reject);
-  } catch (err) {
-    onReject(err);
+    try {
+      executor(resolve, reject);
+    } catch (err) {
+      reject(err);
+    }
   }
-}
 
-myPromise.prototype.then = function (onfullfilled, onRejected) {
-  onFulfilled =
-    typeof onFulfilled === "function" ? onFulfilled : value => value;
-  onRejected =
-    typeof onRejected === "function"
-      ? onRejected
-      : reason => {
-          throw reason;
-        };
+  then(onFulfilled, onRejected) {
+    const promise2 = new MyPromise((resolve, reject) => {
+      onFulfilled =
+        typeof onFulfilled === "function" ? onFulfilled : val => val;
+      onRejected =
+        typeof onRejected === "function"
+          ? onRejected
+          : err => {
+              throw err;
+            };
 
-  let promise2;
-  let self = this;
-  return (promise2 = new myPromise((resolve, reject) => {
-    const handler = cb => {
-      // 保证回调函数之间是一个执行完再执行另一个
-      setTimeout(() => {
+      const handler = (cb, val) => {
         try {
-          const res = cb(self.data);
-          resolvePromise(promise2, res, resolve, reject);
+          let x = cb(val);
+          resolvePromise(promise2, x, resolve, reject);
         } catch (err) {
           reject(err);
         }
-      });
-    };
+      };
 
-    if (self.STATUS === PENDING) {
-      self.cbs.push({
-        onfullfilled: () => {
-          handler(onfullfilled);
-        },
-        onRejected: () => {
-          handler(onRejected);
-        },
-      });
-    } else if (self.STATUS === RESOLVED) {
-      setTimeout(() => {
-        handler(onfullfilled);
-      });
-    } else if (self.STATUS === REJECTED) {
-      setTimeout(() => {
-        handler(onRejected);
-      });
-    }
-  }));
-};
-
-// 利用Promise.resolve
-myPromise.all = function (promiseArr) {
-  let len = promiseArr.length;
-  let count = 0;
-  const res = [];
-  return new myPromise((resolve, reject) => {
-    promiseArr.forEach((promise, index) => {
-      myPromise.resolve(promise).then(
-        val => {
-          count++;
-          res[index] = val;
-          if (count === len) {
-            resolve(res);
-          }
-        },
-        err => reject(err),
-      );
-    });
-  });
-};
-
-// 链式调用
-myPromise.prototype.catch = function (onRejected) {
-  this.then(undefined, onRejected);
-};
-
-// 先返回的直接被决议
-myPromise.race = function (promiseArr) {
-  return new myPromise((resolve, reject) => {
-    promiseArr.forEach(promise => {
-      myPromise.resolve(promise).then(
-        val => resolve(val),
-        reason => reject(reason),
-      );
-    });
-  });
-};
-
-//
-myPromise.resolve = function (value) {
-  // value是myPromise实例直接返回
-  if (value instanceof myPromise) return value;
-
-  // value是具有then属性的对象(函数也是一种对象)
-  if (typeof value === "object" || typeof value === "function") {
-    try {
-      let then = value.then;
-      if (typeof then === "function") {
-        return new myPromise(then.bind(value));
+      if (this.status === "pending") {
+        this.onResovedCallbacks.push(() => {
+          setTimeout(() => {
+            handler(onFulfilled, this.val);
+          }, 0);
+        });
+        this.onRejectedCallbacks.push(() => {
+          setTimeout(() => {
+            handler(onRejected, this.reason);
+          }, 0);
+        });
+      } else if (this.status === "fulfilled") {
+        setTimeout(() => {
+          handler(onFulfilled, this.val);
+        }, 0);
+      } else if (this.status === "rejected") {
+        setTimeout(() => {
+          handler(onRejected, this.reason);
+        }, 0);
       }
-    } catch (err) {
-      return new myPromise((resolve, reject) => {
-        reject(err);
+    });
+    return promise2;
+  }
+
+  catch(fn) {
+    return this.then(null, fn);
+  }
+
+  static resolve(val) {
+    return new MyPromise(resolve => resolve(val));
+  }
+
+  static reject(reason) {
+    return new MyPromise((resolve, reject) => reject(reason));
+  }
+
+  static race(promiseArr) {
+    return new MyPromise((resolve, reject) => {
+      promiseArr.forEach(promise => {
+        promise.then(resolve, reject);
       });
-    }
+    });
   }
 
-  // 其他情况直接返回值
-  return new myPromise(resolve => {
-    resolve(value);
-  });
-};
-
-myPromise.reject = function (reason) {
-  return new Promise((resolve, reject) => {
-    reject(reason);
-  });
-};
-
-myPromise.prototype.finally = function (cb) {
-  return this.then(
-    value => myPromise.resolve(cb()).then(() => value),
-    reason =>
-      myPromise.resolve(callback()).then(() => {
-        throw reason;
-      }),
-  );
-};
-
-// x为onFulfilled/onRejected返回的promise实例
-function resolvePromise(promise, x, resolve, reject) {
-  // promise与x引用同一对象报错
-  if (promise === x) {
-    reject(new TypeError("Chaining Cycle"));
+  static all(promiseArr) {
+    return new MyPromise((resolve, reject) => {
+      let counts = 0;
+      let res = [];
+      let len = promiseArr.length;
+      promiseArr.forEach((promise, index) => {
+        // promise.then(
+        Promise.resolve(promise).then(
+          val => {
+            counts++;
+            res[index] = val;
+            if (counts === len) {
+              resolve(res);
+            }
+          },
+          err => {
+            reject(err);
+          },
+        );
+      });
+    });
   }
-  if ((x && typeof x === "object") || typeof x === "function") {
-    // 多次调用 会以第一次优先，后续会被忽略
-    let used;
+}
+
+function resolvePromise(promise2, x, resolve, reject) {
+  if (promise2 === x) {
+    return reject(new TypeError("Chaining cycle detected for promise"));
+  }
+  let called;
+  if (x != null && (typeof x === "object" || typeof x === "function")) {
     try {
       let then = x.then;
       if (typeof then === "function") {
         then.call(
           x,
           y => {
-            if (used) return;
-            used = true;
-            resolvePromise(promise, y, resolve, reject);
+            if (called) return;
+            called = true;
+            resolvePromise(promise2, y, resolve, reject);
           },
-          r => {
-            if (used) return;
-            used = true;
-            reject(r);
+          err => {
+            if (called) return;
+            called = true;
+            reject(err);
           },
         );
       } else {
-        if (used) return;
-        used = true;
         resolve(x);
       }
     } catch (err) {
-      if (used) return;
-      used = true;
+      if (called) return;
+      called = true;
       reject(err);
     }
   } else {
     resolve(x);
   }
 }
-
-const a = new myPromise(reject => {
-  setTimeout(() => {
-    reject(5);
-  }, 1000);
-});
-
-a.then(res => {
-  console.log(res);
-});
-
-a.then(res => {
-  console.log(res + 5);
-});
-
-myPromise.resolve(5).then(res => {
-  console.log(res, "tes");
-});
