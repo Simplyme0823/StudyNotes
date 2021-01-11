@@ -18,7 +18,6 @@ function getValue(target, path, defaultVal) {
   }
 
   let paths = path.split(".");
-  console.log(paths);
   for (let k of paths) {
     if (preTarget[k]) {
       preTarget = preTarget[k];
@@ -29,5 +28,5 @@ function getValue(target, path, defaultVal) {
   return preTarget;
 }
 
-const res = getValue(obj, "a.b.c.d[0]", "test");
+const res = getValue(obj, "a.b.c.d[0].e", "test");
 console.log(res);

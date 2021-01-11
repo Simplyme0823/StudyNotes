@@ -1,0 +1,68 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function ele(span, attributes, children) {
+        this.span = span;
+        this.attributes = attributes;
+        this.children = children;
+      }
+
+      function el(span, attributes, children) {
+        return new ele(span, attributes, children);
+      }
+
+      ele.prototype.render = function () {
+        const ele = document.createElement(this.span);
+        Object.keys(this.attributes).forEach(key => {
+          ele.setAttribute(key, this.attributes[key]);
+        });
+
+        if (Array.isArray(this.children) && this.children.length > 0) {
+          this.children.forEach(child => {
+            if (typeof child === "string") {
+              ele.innerHTML = child;
+            } else {
+              ele.appendChild(child.render());
+            }
+          });
+        }
+        return ele;
+      };
+
+      const ul = el("ul", { id: "list" }, [
+        el("li", { class: "item" }, ["Item 1"]),
+        el("li", { class: "item" }, ["Item 2"]),
+        el("li", { class: "item" }, ["Item 3"]),
+      ]);
+
+      const ulRoot = ul.render();
+      document.body.appendChild(ulRoot);
+
+      //   function el(span, attributes, children) {
+      //     const ele = document.createElement(span);
+      //     Object.keys(attributes).forEach(key => {
+      //       ele.setAttribute(key, attributes[key]);
+      //     });
+      //     if (Array.isArray(children) && children.length > 0) {
+      //       children.forEach(child => {
+      //         if (child instanceof Node) {
+      //           ele.appendChild(child);
+      //         } else {
+      //           ele.innerHTML = child;
+      //         }
+      //       });
+      //     }
+      //     return ele;
+      //   }
+      console.log(ul);
+    </script>
+  </body>
+</html>

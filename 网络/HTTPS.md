@@ -21,7 +21,7 @@ TLS/SSL 中使用了非对称加密，对称加密以及 HASH 算法
 
 在生成对称加密的密钥环节使用非对称加密方式，之后的建立通信交换报文阶段则使用对称加密方式。
 
-## SSL 握手
+## SSL 握手(TLS1.3 版本使用椭圆曲线加密)
 
 1. 客户端发送请求
    1.1 支持的协议版本
@@ -47,7 +47,10 @@ TLS/SSL 中使用了非对称加密，对称加密以及 HASH 算法
    4.2 编码改变通知，表示随后的信息都将用双方商定的加密方法与密钥发送
    4.3 握手结束，发送所有内容的 hash 供客户端校验
 
+## 参考资料
+
 https://mp.weixin.qq.com/s/4_ZxDy1xE-rn9g6D2yH_fw
 https://www.cnblogs.com/ttltry-air/archive/2012/08/20/2647898.html
 https://mp.weixin.qq.com/s/Yh58lpq9Czo7SGzzdeAHUA
 https://zhuanlan.zhihu.com/p/37636276
+https://juejin.cn/post/6844904178330894343
