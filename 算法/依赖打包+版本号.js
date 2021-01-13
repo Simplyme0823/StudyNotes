@@ -56,11 +56,11 @@ function resolve(root) {
 
   function loop(root) {
     if (!root || !root.name) return false;
-
-    root.require &&
+    if (root.require && Array.isArray(root.require) && require.length > 0) {
       root.require.forEach(node => {
         loop(node);
       });
+    }
 
     let [fileName, newV] = root.name.split("@");
     if (map.get(fileName)) {
@@ -72,9 +72,7 @@ function resolve(root) {
       map.set(fileName, newV);
     }
   }
-
   loop(root);
-
   // 注意 map遍历的顺序取决于set的时候key的顺序
   let res = [...map.keys()].map(fileName => {
     return `${fileName}@${map.get(fileName)}`;

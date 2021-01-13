@@ -7,24 +7,25 @@ class multiRequest {
     this.tasks = [];
   }
 
+  // 这里可以返回promise 也可以不返回
   addTask(fn) {
-    return new Promise((resolve, reject) => {
-      this.tasks.push({ resolve, reject, fn });
-      this.run();
-    });
+    // new Promise((resolve, reject) => {
+    this.tasks.push(fn);
+    this.run();
+    // });
   }
 
   run() {
     while (this.current < this.limitNum && this.tasks.length > 0) {
-      const currentP = this.tasks.shift();
-      const { resolve, reject, fn } = currentP;
-      fn()
+      const currentTask = this.tasks.shift();
+      // const { fn, resolve, reject } = currentTask;
+      currentTask()
         .then(res => {
-          console.log(res, new Date().getTime());
-          resolve(res);
+          console.log(res);
+          // resolve(res);
         })
         .catch(err => {
-          reject(err);
+          // reject(err);
         })
         .finally(() => {
           this.current--;
@@ -73,3 +74,10 @@ limitRun.addTask(fn1);
 limitRun.addTask(fn2);
 limitRun.addTask(fn3);
 limitRun.addTask(fn4);
+
+// const scheduler = new Scheduler();
+// const addTask = (time, order) => {
+//   scheduler
+//     .add(() => timeout(time))
+//     .then(() => console.log(order, new Date().getTime()));
+// };

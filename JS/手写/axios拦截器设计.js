@@ -32,7 +32,6 @@ let axios = {
       chain.push(item.fulfilled, item.rejected);
     });
     let p = Promise.resolve();
-
     while (chain.length) {
       p.then(chain.shift(), chain.shift());
     }

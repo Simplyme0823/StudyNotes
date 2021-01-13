@@ -32,13 +32,15 @@ const p4 = () => {
   });
 };
 
-const input = [p4, p3, p2, p1];
+const input = [p3, p4, p2, p1];
 
 const cb = () => console.log("cb");
 
 function limit(promiseArr) {
   return promiseArr.reduce((prev, cur) => {
-    return prev.then(() => cur().then(res => console.log(res)));
+    return prev.then(() =>
+      cur().then(res => console.log(res, new Date().getTime())),
+    );
   }, Promise.resolve());
 }
 

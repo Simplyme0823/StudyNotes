@@ -6,7 +6,8 @@
   // 50  function a(){}
   console.log(a, window.a);
 }
-// function a() {} function a() {}
+function a() {}
+function a() {}
 console.log(a, window.a);
 
 {

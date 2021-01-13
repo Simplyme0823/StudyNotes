@@ -18,6 +18,7 @@ const test = {
     d: {
       e: { g: "bb" },
       h: { i: "cc" },
+      z: "y",
     },
     j: {
       k: "dd",
@@ -34,19 +35,22 @@ function walk_(obj) {
   while (queue.length > 0) {
     const old = queue.slice();
     queue.length = 0;
+    // 获取当前层的所有属性
     const keys = old.reduce((prev, cur) => {
       prev.push(...Object.keys(cur));
-      const newEle = Object.keys(cur).map(key => cur[key]);
-      if (newEle.some(item => typeof item === "object")) {
-        queue.push(...newEle);
+      // 获取当前层属性对应的值
+      const childVal = Object.keys(cur).map(key => cur[key]);
+      // 如果值含有对象就加入queue数组中
+      if (childVal.some(item => typeof item === "object")) {
+        queue.push(...childVal);
       }
       return prev;
     }, []);
     res.unshift(...keys);
   }
-  console.log(res);
   return res;
 }
+
 walk_(test);
 
 // const testRes = [];

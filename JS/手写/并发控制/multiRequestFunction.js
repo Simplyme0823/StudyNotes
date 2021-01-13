@@ -10,24 +10,28 @@
 
 const p1 = () =>
   new Promise(resolve => {
+    console.log(1, new Date().getTime());
     setTimeout(() => {
       resolve(1);
     }, 1200);
   });
 const p2 = () =>
   new Promise(resolve => {
+    console.log(2, new Date().getTime());
     setTimeout(() => {
       resolve(2);
     }, 200);
   });
 const p3 = () =>
   new Promise(resolve => {
+    console.log(3, new Date().getTime());
     setTimeout(() => {
       resolve(3);
     }, 600);
   });
 const p4 = () =>
   new Promise(resolve => {
+    console.log(4, new Date().getTime());
     setTimeout(() => {
       resolve(4);
     }, 800);
@@ -36,45 +40,34 @@ const p4 = () =>
 const promiseArr = [p1, p2, p3, p4];
 
 function multiRequest(urls = [], maxNum) {
-  // 请求总数量
-  const len = urls.length;
-  // 根据请求数量创建一个数组来保存请求的结果
-  const result = new Array(len).fill(false);
-  // 当前完成的数量
   let count = 0;
-
-  return new Promise((resolve, reject) => {
-    // 请求maxNum个
+  let len = urls.length;
+  let result = new Array(len).fill(0);
+  return new Promise(resolve => {
     while (count < maxNum) {
       next();
     }
     function next() {
       let current = count++;
-      // 处理边界条件
+      // 边界情况，在 最后一个promise刚执行的时候，current与len相等
+      // 但是此时promise还没有被决议
+      // 因此要一直等到所有的promsie决议完成，即，数组初始值都不为false
       if (current >= len) {
-        // 请求全部完成就将promise置为成功状态, 然后将result作为promise值返回
-        !result.includes(false) && resolve(result);
-        return;
+        return !result.includes(0) && resolve(result);
       }
-      const url = urls[current];
-      console.log(`开始 ${current}`, new Date().getTime());
-      Promise.resolve(url())
+      const currentPromise = urls[current];
+      Promise.resolve(currentPromise())
         .then(res => {
-          // 保存请求结果
-          console.log(res);
+          console.log(res, new Date().getTime(), "end");
           result[current] = res;
-          console.log(`完成 ${current}`, new Date().getTime());
-          // 请求没有全部完成, 就递归
           if (current < len) {
             next();
           }
         })
         .catch(err => {
-          console.log(`结束 ${current}`, new Date().getTime());
           result[current] = err;
-          // 请求没有全部完成, 就递归
           if (current < len) {
-            next();
+            next(0);
           }
         });
     }

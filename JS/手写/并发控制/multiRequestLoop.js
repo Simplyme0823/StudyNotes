@@ -32,20 +32,28 @@ const fn4 = () => {
   });
 };
 
-function multiRequest(promiseCreaterArr, maxNum = 2) {
-  loop(0);
-  function loop(n) {
-    if (n * maxNum >= promiseCreaterArr.length) return;
-    const currentTask = promiseCreaterArr.slice(n * maxNum, (n + 1) * maxNum);
-    Promise.all(currentTask.map(item => item()))
-      .then(res => {
-        console.log(res);
-        loop(n + 1);
-      })
-      .catch(err => {
-        loop(n + 1);
-      });
+function loopRequest(promiseArr, max = 2) {
+  const taskPool = [];
+  const pauses = [];
+
+  const loopFn = async tasks => {
+    if (tasks.length === 0) return;
+    const currentTask = tasks.shift();
+    try {
+      const res = await currentTask();
+      console.log(res, new Date().getTime());
+    } catch (err) {
+      pauses.push(currentTask);
+    }
+    return loopFn(tasks);
+  };
+
+  while (max--) {
+    taskPool.push(loopFn(promiseArr));
   }
+
+  Promise.all(taskPool);
 }
+
 const promiseCreaterArr = [fn1, fn2, fn3, fn4];
-multiRequest(promiseCreaterArr);
+loopRequest(promiseCreaterArr);

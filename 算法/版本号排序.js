@@ -12,6 +12,7 @@ function rule(a, b) {
     if (aArr[index] === bArr[index]) {
       index++;
     } else if (!aArr[index] || !aArr[index]) {
+      // 考虑到1.5与1.5.5的问题
       return aArr.length - bArr.length;
     } else {
       return aArr[index] - bArr[index];
