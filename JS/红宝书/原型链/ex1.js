@@ -9,11 +9,17 @@
 function Person() {
   this.name = 1;
 }
+
+// 在原型链修改之前【重写】构造的对象，是不会受原型链修改产生的影响
+// 是重写，直接替换掉原有原型， 不是修改原型对象属性
 var person1 = new Person();
+
 Person.prototype.name = 2;
+
 console.log(person1.name); //1
 console.log(person1.__proto__.name); //2
 
+// 这里是重写
 Person.prototype = {
   name: 3,
 };

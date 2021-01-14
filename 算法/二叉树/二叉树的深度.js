@@ -2,7 +2,6 @@
 
 function deep(head) {
   if (!head) return 0;
-
   return 1 + Math.max(deep(root.left), deep(root.right));
 }
 

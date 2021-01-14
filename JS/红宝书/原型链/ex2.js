@@ -12,6 +12,7 @@ Inner.prototype = outer; // {a : 1}
 
 var inner = new Inner();
 
+// inner本身没有，但是要在原型链上寻找
 inner.a = inner.a + 1; // {a :2}
 
 console.log(inner); // {a:2}

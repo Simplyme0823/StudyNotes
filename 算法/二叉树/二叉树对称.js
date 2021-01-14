@@ -31,3 +31,20 @@ function __isSymmetric(t1, t2) {
     __isSymmetric(t1.right, t2.left)
   );
 }
+
+function isSymmetric(node) {
+  if (!node) return true;
+
+  return __isSymmetric(node.left, node.right);
+
+  function __isSymmetric(T1, T2) {
+    if (!T1 || !T2) return false;
+    if (!T1 && !T2) return true;
+
+    return (
+      T1.val === T2.val &&
+      __isSymmetric(T1.left, T2.right) &&
+      __isSymmetric(T1.right, T2.left)
+    );
+  }
+}
