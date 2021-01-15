@@ -9,6 +9,7 @@ function foo() {
   get = function () {
     console.log(1);
   };
+  // 这里的this不是window，使用了new操作符后，this变成了foo类型的对象{}
   return this;
 }
 
@@ -32,7 +33,10 @@ function get() {
 // 考点之一：变量提升
 // function 提升比 var 优先级高
 foo.get(); //2 √
+// 这里 get被重新复制了 所以输出4
 get(); //4 √
+// 先执行foo() 返回this，此时this为window
+// foo中window.get被重新复制了
 foo().get(); // 1 √
 get(); //1
 new foo.get(); //2 √   点运算符优先级为19 不带参数的new优先级为18 先执行foo.get
