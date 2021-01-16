@@ -15,21 +15,21 @@ console.log(superType.prototype);
 // undefined
 console.log(superType.prototype.prototype);
 // Object.prototype
-console.log(superType.prototype.__proto__);
-// Function
-console.log(superType.__proto__);
-// undefined
+console.log(superType.prototype.__proto__ === Object.prototype);
+// Function.prototype
+console.log(superType.__proto__ === Function.prototype);
+// undefined 对象没有prototype属性
 console.log(superType.__proto__.prototype);
-// Function
-console.log(superType.__proto__.__proto__);
-// Function
-console.log(Function.prototype);
-// Function
+// Object.prototype
+console.log(superType.__proto__.__proto__ === Object.prototype, 6);
+// Object.prototype
+console.log(Function.prototype.__proto__);
+// Function.prototype
 console.log(Function.__proto__);
-// Function
+// undefined
 console.log(Function.prototype.prototype);
-// Function
-console.log(Function.__proto__.__proto__);
+// Object.prototype
+console.log(Function.__proto__.__proto__ === Object.prototype, 66);
 
 // subType { constructor: [Function: subType] }
 console.log(subType.prototype);
@@ -38,13 +38,13 @@ console.log(subType.prototype.prototype);
 
 // 这里是由于Object.create的原因
 // superType {}
-console.log(subType.prototype.__proto__);
+console.log(subType.prototype, subType.prototype.__proto__, 666);
 
 // true
 console.log(subType.prototype.__proto__.__proto__ === Object.prototype);
 
-// Function
-console.log(subType.__proto__);
+// Function.prototype
+console.log(subType.__proto__ === Function.prototype);
 
 //  TODO Object.create与原型链的关系
 const obj = Object.create({ a: "a" });
