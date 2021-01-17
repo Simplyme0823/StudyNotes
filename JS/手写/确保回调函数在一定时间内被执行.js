@@ -36,25 +36,3 @@ function test(cb) {
 }
 
 test(cb);
-
-function multiTask(promiseCreaterArr, maxNum = 2) {
-  return new Promise(resolve => {
-    let counts = 0;
-    let result = new Array(promiseCreaterArr.length).fill(false);
-
-    while (counts < maxNum) {
-      step();
-    }
-    function step() {
-      let current = counts++;
-      if (current > promiseCreaterArr.length) {
-        return !result.includes(false) && resolve(result);
-      }
-      const currentPromiseCreater = promiseCreaterArr[current];
-      currentPromiseCreater().then(res => {
-        result[current] = res;
-        step();
-      });
-    }
-  });
-}
