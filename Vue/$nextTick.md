@@ -13,4 +13,4 @@ timerFunc 2.6.11 版本
 
 https://blog.csdn.net/hkh_1012/article/details/53453138
 nodeJS 的时间循环
-idle 观察者>>io 观察者>check 观察者
+idle 观察者 >> io 观察者 > check 观察者

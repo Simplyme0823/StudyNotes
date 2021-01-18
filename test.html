@@ -1,0 +1,347 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function debounce(options) {
+        const { wait, fn, cb, imm } = options;
+        let timer = null;
+        function handler(context, args) {
+          const res = fn.apply(context, args);
+          if (cb && typeof cb === "function") {
+            cb(res);
+          }
+        }
+        return function () {
+          if (timer) clearTimeout(timer);
+          if (imm) {
+            let callNow = !timer;
+            if (callNow) handler(this, arguments);
+            timer = setTimeout(() => {
+              timer = null;
+            }, wait);
+          } else {
+            timer = setTimeout(() => {
+              handler(this, arguments);
+            }, wait);
+          }
+        };
+      }
+
+      function throttle(options) {
+        const { wait, fn, cb, tailing } = options;
+        let timer = null;
+        let last = 0;
+        function handler(context, args) {
+          const res = fn.apply(context, args);
+          if (cb && typeof cb === "function") {
+            cb(res);
+          }
+        }
+        return function () {
+          const now = new Date().getTime();
+          if (now - last > wait) {
+            handler(this, arguments);
+            last = now;
+            if (timer) {
+              clearTimeout(timer);
+              timer = null;
+            }
+          } else if (tailing && timer == null) {
+            timer = setTimeout(() => {
+              handler(this, arguments);
+              timer = null;
+            }, wait);
+          }
+        };
+      }
+      const db = debounce({
+        fn: () => console.log("debounce"),
+        wait: 1000,
+        imm: false,
+      });
+      const th = throttle({
+        fn: () => console.log("throttle"),
+        wait: 1000,
+        tailing: true,
+      });
+    </script>
+    <button onclick="db()">debounce</button>
+    <button onclick="th()">throttle</button>
+  </body>
+  <script>
+    function deepClone(target, map = new Map()) {
+      if (map.get(target)) {
+        return map.get(target);
+      }
+      if (typeof target === "object" && target !== null) {
+        const cloneVal = Array.isArray(target) ? [] : {};
+        map.set(target, cloneVal);
+        Object.keys(target).forEach(key => {
+          cloneVal[key] = deepClone(target[key], map);
+        });
+        return cloneVal;
+      }
+      return target;
+    }
+    const target = { a: { b: { c: { d: "d" } } } };
+    target.e = target;
+    console.log(target, deepClone(target));
+  </script>
+  <script>
+    Function.prototype.myApply = function () {
+      const context = arguments[0] || window;
+      const args = arguments[1];
+      context.fn = this;
+      const res = context.fn(...args);
+      delete context.fn;
+      return res;
+    };
+    Function.prototype.myCall = function () {
+      const context = arguments[0] || window;
+      const args = Array.from(arguments).slice(1);
+      context.fn = this;
+      const res = context.fn(...args);
+      delete context.fn;
+      return res;
+    };
+    Function.prototype.myBind = function () {
+      const context = arguments[0] || window;
+      const args1 = Array.from(arguments).slice(1);
+      const self = this;
+      function Fn(...args2) {
+        return self.apply(
+          this instanceof Fn ? this : context,
+          args1.concat(args2),
+        );
+      }
+      Fn.prototype = Object.create(this.prototype);
+      return Fn;
+    };
+    function myNew(fn, ...args) {
+      const obj = {};
+      Object.setPrototypeOf(obj, fn.prototype);
+      const res = fn.apply(obj, args);
+      return typeof res === "object" && res !== null ? res : obj;
+    }
+
+    function instanceOf(subType, superType) {
+      const prototype = superType.prototype;
+      let proto = Object.getPrototypeOf(subType);
+      while (proto != null) {
+        if (proto === prototype) {
+          return true;
+        }
+        proto = Object.getPrototypeOf(proto);
+      }
+      return false;
+    }
+
+    function objectCreate(obj) {
+      function Fn() {}
+      Fn.prototype = obj;
+      return new Fn();
+    }
+
+    function objectAssign(target, ...args) {
+      args.forEach(source => {
+        if (source) {
+          Reflect.ownKeys(source).forEach(key => {
+            if (Object.getOwnPropertyDescriptor(source, key).enumerable) {
+              target[key] = source[key];
+            }
+          });
+        }
+      });
+      return taregt;
+    }
+
+    Array.prototype.myReduce = function () {
+      let init = arguments[1];
+      let fn = arguments[0];
+      let k = 0;
+      let value = init;
+      if (!init) {
+        k = 1;
+        // 考虑稀数组
+        while (k < this.length && !(k in this)) {
+          k++;
+        }
+        value = this[k];
+      }
+
+      while (k < this.length) {
+        // 跳过稀数组
+        if (k in this) {
+          value = fn(value, this[k], k, this);
+        }
+        k++;
+      }
+      return value;
+    };
+
+    function myFlat(arr, n) {
+      n = !n && n !== 0 ? Infinity : n;
+      while (arr.some(item => Array.isArray(item)) && n > 0) {
+        arr = Array.prototype.concat.apply([], arr);
+        n--;
+      }
+      return arr;
+    }
+    const input = [1, [0], [2, [3], [4]]];
+    const res = myFlat(input, 1);
+    console.log(res);
+
+    function myFlat_(arr, n) {
+      n = !n && n !== 0 ? Infinity : n;
+      if (n > 0) {
+        return arr.reduce((prev, cur) => {
+          return prev.concat(Array.isArray(cur) ? myFlat_(cur, n - 1) : cur);
+        }, []);
+      }
+      return arr;
+    }
+    const res_ = myFlat_(input, 1);
+    console.log(res_);
+
+    let res__ = [];
+    function myFlat__(arr, n) {
+      n = !n && n !== 0 ? Infinity : n;
+      arr.forEach(item => {
+        if (Array.isArray(item) && n > 0) {
+          myFlat__(item, n - 1);
+        } else {
+          res__.push(item);
+        }
+      });
+    }
+    myFlat__(input);
+    console.log(res__);
+
+    function myFlat___(arr, n) {
+      n = !n && n !== 0 ? Infinity : n;
+      const stack = [...arr];
+      let res = [];
+      while (stack.length > 0) {
+        const current = stack.slice();
+        stack.length = 0;
+        current.forEach(item => {
+          if (Array.isArray(item) && n > 0) {
+            stack.push(...item);
+          } else {
+            res.push(item);
+          }
+        });
+        n--;
+      }
+      return res;
+    }
+    const res___ = myFlat___(input);
+    console.log(res___);
+
+    Array.prototype.myMap = function (cb, context) {
+      if (typeof cb !== "function") return;
+      const arr = this;
+      const len = arr.length;
+      let res = [];
+      for (let i = 0; i < len; i++) {
+        res[i] = cb.call(context, arr[i], i, arr);
+      }
+      return res;
+    };
+
+    Array.prototype.myFilter = function (cb, context) {
+      if (typeof cb !== "function") return;
+      const arr = this;
+      const len = arr.length;
+      let result = [];
+      for (let i = 0; i < len; i++) {
+        let res = cb.call(context, arr[i], i, arr);
+        if (res) {
+          result.push(res);
+        }
+      }
+      return result;
+    };
+
+    function async(gen) {
+      const task = gen();
+      return new Promise((resolve, reject) => {
+        step(() => task.next());
+        function step(next) {
+          let result;
+          try {
+            result = next();
+          } catch (err) {
+            return reject(err);
+          }
+
+          if (result.done) {
+            return resolve(result.value);
+          }
+          return Promise.resolve(result.value)
+            .then(res => step(() => task.next(res)))
+            .catch(err => step(() => task.throw(err)));
+        }
+      });
+    }
+
+    function axjsP(options) {
+      return new Promise((resolve, reject) => {
+        const { method = "GET", url, data } = options;
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function () {
+          reject(xhr.status);
+        };
+        if (method === "GET") {
+          const qs = Object.keys(data)
+            .map(key => {
+              return `${key}=${data[key]}`;
+            })
+            .join("&");
+          xhr.open(method, url + qs, true);
+          xhr.send();
+        } else {
+          xhr.open(method, url, true);
+          xhr.send(data);
+        }
+      });
+    }
+
+    function createScript(url) {
+      const script = document.createElement("script");
+      script.src = url;
+      script.async = true;
+      return script;
+    }
+
+    function jsonp(url, onsuccess, onerror) {
+      const hash = Math.random();
+      window[`jsonp${hash}`] = function (data) {
+        onsuccess(data);
+      };
+      const script = createScript(url);
+      script.onload = function () {
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+          window[`jsonp${hash}`] = null;
+        }
+        script.onload = script.onerror= null
+      };
+      script.onerror = function (err) {
+        onerror(err);
+        script.onload = script.onerror= null
+      };
+      window.querySelector("head").appendChild(script);
+    }
+  </script>
+</html>
