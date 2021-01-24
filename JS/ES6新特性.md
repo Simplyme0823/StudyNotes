@@ -47,7 +47,7 @@ obj.b; // undefined   "undefined"   Window {postMessage: ƒ, blur: ƒ, focus: ƒ
 
 ## 加强的对象字面量
 
-## 对象结构
+## 对象解构
 
 ## Promise
 

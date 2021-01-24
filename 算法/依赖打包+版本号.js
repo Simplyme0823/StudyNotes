@@ -84,3 +84,8 @@ function resolve(root) {
 const res = resolve(tree);
 
 console.log(res);
+
+
+function loop(root){
+  if(!root)
+}
